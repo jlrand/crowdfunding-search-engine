@@ -1,0 +1,84 @@
+{% extends "crowdsearch/base.html" %}
+{% load humanize %}
+{% load pagination_tags %}
+
+	
+	{% block content-right %}
+	<div class="results_count">
+	{{kickitems|length}} results
+	</div>
+	{% lazy_paginate kickitems 30 %}
+		{% if kickitems %}
+		    {% for kickitem in kickitems %}
+		    	<a class="image-url" target="_blank" href="{{ kickitem.url }}">
+			        <div class="project-wrapper">
+			        	<div class="project-image-wrapper">
+			        	<img src="{{ kickitem.thumbimageurl }}" height="150px">
+			        	</div>
+			        	<div class="project-name">
+				        	<div class="project-description">
+				        	{{ kickitem.name }}
+				        	</div>
+				        	<div class="short-description">
+				        	{{ kickitem.short_description }}
+				        	</div>
+				        	<div class="project-pledged project-details">
+								<div class="pledged-number">${{kickitem.pledge|floatformat:"0"|intcomma}}</div>
+								<div class="pledged-label">pledged</div>
+				        	</div>
+				        	<div class="project-backers project-details">
+				        		<div class="backers-number">{{kickitem.backers|intcomma}}</div>
+								<div class="backers-label">backers</div>
+				        	</div>
+				        	<div class="ended project-details">
+				        	{% if kickitem.is_active %}
+				        		<div class="time-number">{{kickitem.end_time|timeuntil}}</div>
+					        	<div class="remaining-label">Remaining</div>
+				        	{%endif%}
+				        	{% if not kickitem.is_active and kickitem.funded %}
+				        	<div>
+					        	<div class="time-number">Funded</div>
+					        	<div class="remaining-label">{{kickitem.end_time|date:'M d' }}</div>
+				        	</div>
+				        	{%endif%}
+				        	{% if not kickitem.is_active and not kickitem.funded %}
+				        	<div style="color:red">
+				        	<div class="time-number">Failed</div>
+				        	<div class="remaining-label">{{kickitem.end_time|date:'M d' }}</div>
+				        	</div>
+				        	{%endif%}
+				        	</div>				        	
+				        	<!--
+{% for reward in kickitem.rewards.all %}
+							<li>{{ reward.reward_text }}</li>
+							{% endfor %}
+-->							{% if not kickitem.is_active and not kickitem.funded %}
+				        	<div class="funded project-details" style="padding:0px;background:#CCC;border-radius: 6px;overflow:hidden;">
+							  <div style="width:{{kickitem.percent_funded}}%;background:#76cc1e;text-align:center;max-width:100%;">
+							    <div class="funded-percent-number"><b>{{kickitem.percent_funded|intcomma}}%</b> funded of <b>${{kickitem.goal|floatformat:"0"|intcomma}}</b> goal</div>
+							  </div>
+							</div>
+				        	{% else %}
+				        	<div class="funded project-details" style="padding:0px;background:#CCC;border-radius: 6px;overflow:hidden;">
+							  <div style="width:{{kickitem.percent_funded}}%;background:#76cc1e;text-align:center;max-width:100%;">
+							    <div class="funded-percent-number"><b>{{kickitem.percent_funded|intcomma}}%</b> funded of <b>${{kickitem.goal|floatformat:"0"|intcomma}}</b> goal</div>
+							  </div>
+							</div>
+							{%endif%}
+				        	<div class="average_donation project-details">
+				        	<div class="average_donation_text">get it on {{kickitem.site}}</div>
+				        	<div class="average-donation-price">${{kickitem.get_most_popular_reward.reward_amount|floatformat:"-2"|intcomma}}</div>
+				        	<div class="location">{{kickitem.location}}</div>
+				        	<div class="{{kickitem.site}}-logo"></div>
+				        	</div>
+
+			        	</div>
+			        </div>
+		        </a>
+		    {% endfor %}
+		    {% paginate %}
+		{% else %}
+		    <p>No projects are available.</p>
+		{% endif %}
+	{% endblock content-right%}
+

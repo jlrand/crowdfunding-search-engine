@@ -1,0 +1,262 @@
+{% extends "crowdsearch/base.html" %}
+{% load humanize %}
+{% load static %}
+
+{%block banner%}
+<div class="home-banner"></div>
+{%endblock banner%}
+
+
+{%block content%}
+	
+	<div class="content-wrapper">
+		<div class="preview-search-header">
+			<a href="{% url index %}?search_text=&parent_category=Technology&get_it_pledge_amount_0=&get_it_pledge_amount_1=&pledge=&backers=&funded=&site=&end_time=&o=-backers>">
+			<div class="big-text">Popular New Tech</div>
+			<span>  See more...</span>
+		</a>
+		</div>
+	{% if new_tech %}
+		    {% for kickitem in new_tech %}
+		    	<div class="project-wrapper">
+			        	<div class="project-image-wrapper">
+			        	<a target="_blank" href="{{ kickitem.url }}">
+			        	<img src="{{ kickitem.thumbimageurl }}" height="150px">
+			        	</a>
+			        	</div>
+			        	<div class="project-name">
+				        	<div class="project-description">
+				        	<a style="text-decoration:none; color:black;" target="_blank" href="{{ kickitem.url }}">
+				        	<div class="location">{{kickitem.location}}</div>
+				        	{{ kickitem.name }}
+				        	</a>
+				        	</div>
+				        	<div class="short-description">
+				        	{{ kickitem.short_description }}
+				        	</div>
+				        	<div class="project-pledged project-details">
+								<div class="pledged-number">{{kickitem.currency_symbol|safe}}{{kickitem.pledge|floatformat:"0"|intcomma}}</div>
+								<div class="pledged-label">pledged</div>
+				        	</div>
+				        	<div class="project-backers project-details">
+				        		<div class="backers-number">{{kickitem.backers|intcomma}}</div>
+								<div class="backers-label">backers</div>
+				        	</div>
+				        	<div class="ended project-details">
+				        	{% if kickitem.is_active %}
+				        		<div class="time-number">{{kickitem.days_left}}</div>
+					        	<div class="remaining-label">Remaining</div>
+				        	{%endif%}
+				        	{% if not kickitem.is_active and kickitem.funded %}
+				        	<div>
+					        	<div class="time-number">Funded</div>
+					        	<div class="remaining-label">{{kickitem.end_time|date:'M d' }}</div>
+				        	</div>
+				        	{%endif%}
+				        	{% if not kickitem.is_active and not kickitem.funded %}
+				        	<div style="color:red">
+				        	<div class="time-number">Failed</div>
+				        	<div class="remaining-label">{{kickitem.end_time|date:'M d' }}</div>
+				        	</div>
+				        	{%endif%}
+				        	</div>				        	
+						{% if not kickitem.is_active and not kickitem.funded %}
+				        	<div class="funded project-details" style="padding:0px;background:#CCC;border-radius: 6px;overflow:hidden;">
+							  <div style="width:{{kickitem.percent_funded}}%;background:#76cc1e;text-align:center;max-width:100%;">
+							    <div class="funded-percent-number"><b>{{kickitem.percent_funded|intcomma}}%</b> funded of <b>${{kickitem.goal|floatformat:"0"|intcomma}}</b> goal</div>
+							  </div>
+							</div>
+				        	{% else %}
+				        	<div class="funded project-details" style="padding:0px;background:#CCC;border-radius: 6px;overflow:hidden;">
+							  <div style="width:{{kickitem.percent_funded}}%;background:#76cc1e;text-align:center;max-width:100%;">
+							    <div class="funded-percent-number"><b>{{kickitem.percent_funded|intcomma}}%</b> funded of <b>${{kickitem.goal|floatformat:"0"|intcomma}}</b> goal</div>
+							  </div>
+							</div>
+							{%endif%}
+				        	<div class="average_donation project-details">
+				        	<!-- <div class="average_donation_text">get it on {{kickitem.site}}</div> -->
+				        	<a class="average-donation-price" style="text-decoration:none; color:black;" target="_blank" href="{{ kickitem.url }}">
+				        	{{kickitem.currency_symbol|safe}}{{kickitem.get_it_pledge_amount|floatformat:"-2"|intcomma}}<span style="font-size:12px; position:relative; top:-7px;">{{kickitem.currency_stem|safe}}</span>
+				        	<div class="site-text">on {{kickitem.site}}</div>
+				        	</a>
+				        	
+
+				        	<div class="popular-reward-text" style="display:none;"><div style="margin-bottom:10px;"><b>Pledge {{kickitem.currency_symbol|safe}}{{kickitem.get_it_pledge_amount|floatformat:"-2"|intcomma}} on {{kickitem.site}} and get:</b></div>{{kickitem.get_most_popular_reward.reward_text}}</div>
+				        	<div class="{{kickitem.site}}-logo"></div>
+				        	</div>
+
+			        	</div>
+			        </div>
+		    {% endfor %}
+		    {% endif %}
+		    
+	<div style="clear:both;"></div>
+	<div class="content-wrapper">
+		
+		<div class="preview-search-header">
+		<a href="{% url index %}?search_text=&parent_category=&get_it_pledge_amount_0=&get_it_pledge_amount_1=20&pledge=&backers=&funded=&site=&end_time=&o=-backers">
+		<div class="big-text">Best Ideas for Under $20</div>
+		<span>  See more...</span>
+		</a>
+		</div>
+	</div>
+	{% if under_20 %}
+		    {% for kickitem in under_20 %}
+		    	<div class="project-wrapper">
+			        	<div class="project-image-wrapper">
+			        	<a target="_blank" href="{{ kickitem.url }}">
+			        	<img src="{{ kickitem.thumbimageurl }}" height="150px">
+			        	</a>
+			        	</div>
+			        	<div class="project-name">
+				        	<div class="project-description">
+				        	<a style="text-decoration:none; color:black;" target="_blank" href="{{ kickitem.url }}">
+				        	<div class="location">{{kickitem.location}}</div>
+				        	{{ kickitem.name }}
+				        	</a>
+				        	</div>
+				        	<div class="short-description">
+				        	{{ kickitem.short_description }}
+				        	</div>
+				        	<div class="project-pledged project-details">
+								<div class="pledged-number">{{kickitem.currency_symbol|safe}}{{kickitem.pledge|floatformat:"0"|intcomma}}</div>
+								<div class="pledged-label">pledged</div>
+				        	</div>
+				        	<div class="project-backers project-details">
+				        		<div class="backers-number">{{kickitem.backers|intcomma}}</div>
+								<div class="backers-label">backers</div>
+				        	</div>
+				        	<div class="ended project-details">
+				        	{% if kickitem.is_active %}
+				        		<div class="time-number">{{kickitem.days_left}}</div>
+					        	<div class="remaining-label">Remaining</div>
+				        	{%endif%}
+				        	{% if not kickitem.is_active and kickitem.funded %}
+				        	<div>
+					        	<div class="time-number">Funded</div>
+					        	<div class="remaining-label">{{kickitem.end_time|date:'M d' }}</div>
+				        	</div>
+				        	{%endif%}
+				        	{% if not kickitem.is_active and not kickitem.funded %}
+				        	<div style="color:red">
+				        	<div class="time-number">Failed</div>
+				        	<div class="remaining-label">{{kickitem.end_time|date:'M d' }}</div>
+				        	</div>
+				        	{%endif%}
+				        	</div>				        	
+						{% if not kickitem.is_active and not kickitem.funded %}
+				        	<div class="funded project-details" style="padding:0px;background:#CCC;border-radius: 6px;overflow:hidden;">
+							  <div style="width:{{kickitem.percent_funded}}%;background:#76cc1e;text-align:center;max-width:100%;">
+							    <div class="funded-percent-number"><b>{{kickitem.percent_funded|intcomma}}%</b> funded of <b>${{kickitem.goal|floatformat:"0"|intcomma}}</b> goal</div>
+							  </div>
+							</div>
+				        	{% else %}
+				        	<div class="funded project-details" style="padding:0px;background:#CCC;border-radius: 6px;overflow:hidden;">
+							  <div style="width:{{kickitem.percent_funded}}%;background:#76cc1e;text-align:center;max-width:100%;">
+							    <div class="funded-percent-number"><b>{{kickitem.percent_funded|intcomma}}%</b> funded of <b>${{kickitem.goal|floatformat:"0"|intcomma}}</b> goal</div>
+							  </div>
+							</div>
+							{%endif%}
+				        	<div class="average_donation project-details">
+				        	<!-- <div class="average_donation_text">get it on {{kickitem.site}}</div> -->
+				        	<a class="average-donation-price" style="text-decoration:none; color:black;" target="_blank" href="{{ kickitem.url }}">
+				        	{{kickitem.currency_symbol|safe}}{{kickitem.get_it_pledge_amount|floatformat:"-2"|intcomma}}<span style="font-size:12px; position:relative; top:-7px;">{{kickitem.currency_stem|safe}}</span>
+				        	<div class="site-text">on {{kickitem.site}}</div>
+				        	</a>
+				        	
+
+				        	<div class="popular-reward-text" style="display:none;"><div style="margin-bottom:10px;"><b>Pledge {{kickitem.currency_symbol|safe}}{{kickitem.get_it_pledge_amount|floatformat:"-2"|intcomma}} on {{kickitem.site}} and get:</b></div>{{kickitem.get_most_popular_reward.reward_text}}</div>
+				        	<div class="{{kickitem.site}}-logo"></div>
+				        	</div>
+
+			        	</div>
+			        </div>
+		    {% endfor %}
+		    {% endif %}
+	<div style="clear:both;"></div>
+	<div class="content-wrapper">
+	<div class="preview-search-header">
+		<a href="{% url index %}?search_text=&parent_category=&get_it_pledge_amount_0=&get_it_pledge_amount_1=&pledge=&backers=&funded=&site=&end_time=3&o=-pledge">
+		<div class="big-text">All Time Most Funded Projects</div>
+		<span>  See more...</span>
+		</a>
+		</div>
+	</div>
+	{% if most_funded %}
+		    {% for kickitem in most_funded %}
+		    	<div class="project-wrapper">
+			        	<div class="project-image-wrapper">
+			        	<a target="_blank" href="{{ kickitem.url }}">
+			        	<img src="{{ kickitem.thumbimageurl }}" height="150px">
+			        	</a>
+			        	</div>
+			        	<div class="project-name">
+				        	<div class="project-description">
+				        	<a style="text-decoration:none; color:black;" target="_blank" href="{{ kickitem.url }}">
+				        	<div class="location">{{kickitem.location}}</div>
+				        	{{ kickitem.name }}
+				        	</a>
+				        	</div>
+				        	<div class="short-description">
+				        	{{ kickitem.short_description }}
+				        	</div>
+				        	<div class="project-pledged project-details">
+								<div class="pledged-number">{{kickitem.currency_symbol|safe}}{{kickitem.pledge|floatformat:"0"|intcomma}}</div>
+								<div class="pledged-label">pledged</div>
+				        	</div>
+				        	<div class="project-backers project-details">
+				        		<div class="backers-number">{{kickitem.backers|intcomma}}</div>
+								<div class="backers-label">backers</div>
+				        	</div>
+				        	<div class="ended project-details">
+				        	{% if kickitem.is_active %}
+				        		<div class="time-number">{{kickitem.days_left}}</div>
+					        	<div class="remaining-label">Remaining</div>
+				        	{%endif%}
+				        	{% if not kickitem.is_active and kickitem.funded %}
+				        	<div>
+					        	<div class="time-number">Funded</div>
+					        	<div class="remaining-label">{{kickitem.end_time|date:'M d' }}</div>
+				        	</div>
+				        	{%endif%}
+				        	{% if not kickitem.is_active and not kickitem.funded %}
+				        	<div style="color:red">
+				        	<div class="time-number">Failed</div>
+				        	<div class="remaining-label">{{kickitem.end_time|date:'M d' }}</div>
+				        	</div>
+				        	{%endif%}
+				        	</div>				        	
+						{% if not kickitem.is_active and not kickitem.funded %}
+				        	<div class="funded project-details" style="padding:0px;background:#CCC;border-radius: 6px;overflow:hidden;">
+							  <div style="width:{{kickitem.percent_funded}}%;background:#76cc1e;text-align:center;max-width:100%;">
+							    <div class="funded-percent-number"><b>{{kickitem.percent_funded|intcomma}}%</b> funded of <b>${{kickitem.goal|floatformat:"0"|intcomma}}</b> goal</div>
+							  </div>
+							</div>
+				        	{% else %}
+				        	<div class="funded project-details" style="padding:0px;background:#CCC;border-radius: 6px;overflow:hidden;">
+							  <div style="width:{{kickitem.percent_funded}}%;background:#76cc1e;text-align:center;max-width:100%;">
+							    <div class="funded-percent-number"><b>{{kickitem.percent_funded|intcomma}}%</b> funded of <b>${{kickitem.goal|floatformat:"0"|intcomma}}</b> goal</div>
+							  </div>
+							</div>
+							{%endif%}
+				        	<div class="average_donation project-details">
+				        	<!-- <div class="average_donation_text">get it on {{kickitem.site}}</div> -->
+				        	<a class="average-donation-price" style="text-decoration:none; color:black;" target="_blank" href="{{ kickitem.url }}">
+				        	{{kickitem.currency_symbol|safe}}{{kickitem.get_it_pledge_amount|floatformat:"-2"|intcomma}}<span style="font-size:12px; position:relative; top:-7px;">{{kickitem.currency_stem|safe}}</span>
+				        	<div class="site-text">on {{kickitem.site}}</div>
+				        	</a>
+				        	
+
+				        	<div class="popular-reward-text" style="display:none;"><div style="margin-bottom:10px;"><b>Pledge {{kickitem.currency_symbol|safe}}{{kickitem.get_it_pledge_amount|floatformat:"-2"|intcomma}} on {{kickitem.site}} and get:</b></div>{{kickitem.get_most_popular_reward.reward_text}}</div>
+				        	<div class="{{kickitem.site}}-logo"></div>
+				        	</div>
+
+			        	</div>
+			        </div>
+
+		    {% endfor %}
+		    {% endif %}
+	<div style="clear:both;"></div>
+	</div>
+
+{%endblock content%}

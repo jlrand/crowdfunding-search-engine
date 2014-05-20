@@ -1,0 +1,36 @@
+{% extends "crowdsearch/base.html" %}
+{% load humanize %}
+
+	
+	{% block content-right %}
+		{% if kickitems %}
+		    {% for kickitem in kickitems.object_list %}
+	    	<a class="image-url" href="{{ kickitem.kickitem.url }}">
+		        <div class="project-wrapper">
+		        	<div class="project-image-wrapper">
+		        	<img src="{{ kickitem.kickitem.smallimageurl }}">
+		        	</div>
+		        	<div class="project-name">
+			        	<div class="project-description">
+			        	{{ kickitem.kickitem.name }}
+			        	</div>
+			        	<div class="reward-backers project-details">
+			        	<b>{{ kickitem.reward_backers|intcomma }} backers</b>
+			        	</div>
+			        	<div class="reward_amount project-details">
+						<b>${{kickitem.reward_amount|intcomma}} pledge gets:</b>
+			        	</div>
+			        	<div class="project-reward">
+			        	{{kickitem.reward_text}}
+			        	</div>
+		        	</div>
+		        </div>
+	        </a>
+	    {% endfor %}
+	{% else %}
+	    <p>No projects are available.</p>
+	{% endif %}
+
+	
+	{% endblock content-right%}
+

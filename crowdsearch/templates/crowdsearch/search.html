@@ -1,0 +1,76 @@
+	{% extends "crowdsearch/base.html" %}
+	
+	{% block content %}
+	<div class="content-wrapper">
+		<div class="content">
+			{% block content-left %}
+			<div class="content-left">
+			 
+				<form id="filters-form" action="" method="get">
+				
+				<div class="fieldWrapper id_search">
+			        {{ kickitems.form.search_text }}
+			        <input id="search-button" value="Search" type="submit"  class="button"/>
+			    </div>
+				</br>
+				<div class="fieldWrapper">
+			        {{ kickitems.form.parent_category }}
+			    </div>
+			    
+			    <div class="fieldWrapper" style="margin-bottom:10px">
+			    	Set Custom Price Range: </br>
+			        $<input class="min-max-input" type="text" placeholder="Min" name="get_it_pledge_amount_0" id="id_get_it_pledge_amount_0">
+			        to
+			        $<input class="min-max-input" type="text" placeholder="Max"name="get_it_pledge_amount_1" id="id_get_it_pledge_amount_1">
+			        <input  value="GO" type="submit"  class="go-button"/>
+			    </div>
+			    
+			    <div class="fieldWrapper">
+			        {{ kickitems.form.pledge }}
+			    </div>
+			    
+			    <div class="fieldWrapper">
+			        {{ kickitems.form.backers }}
+			    </div>
+			    			    
+			    <div class="fieldWrapper">
+			        {{ kickitems.form.funded }}
+			    </div>
+			    
+			    <div class="fieldWrapper">
+			        {{ kickitems.form.site }}
+			    </div>
+			    <div class="fieldWrapper">
+			        {{ kickitems.form.end_time }}
+			    </div>
+			    <div class="fieldWrapper">
+			        {{ kickitems.form.o }}
+			    </div>
+			    
+				<input value="Update Results" type="submit"  class="button" style="position:relative; top:-45px;"/>
+				</br> </br>
+				<a style="text-decoration:none;position:relative; top:-45px;" href="{% url index %}">Reset Filters </a>
+				</form>
+			{% endblock %} 
+			</div>
+			
+			<div class="content-right">
+			<div class="endless_page_template">
+			{% include "crowdsearch/project_list.html" %}
+			</div>
+			{% block js %}
+	<script src="http://media.uncrowd.us/js/jquery.dropkick.js"></script>
+	<script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"></script>
+	<script>$.endlessPaginate({onCompleted: function(context, fragment) {setHoverRewardText();}, paginateOnScroll: true, paginateOnScrollMargin: 300});</script>
+    
+			
+			</div>
+			</div>
+			{% endblock %}
+			
+		</div>
+		
+	</div>
+<!-- <div style="height:200px" class="footer"> -->
+</div>
+{%endblock content %}
